@@ -7,7 +7,7 @@
 
 extern void yyerror(const char*c);
 
-#include "provol_one.tab.h"
+#include "provolone_ext.tab.h"
 
 char *p;
 
@@ -58,7 +58,7 @@ return(EOL);}
 
 
 "FIM" {
-
+printf("Li: %s",yytext);
 	return (FIM);}
 
 
@@ -66,7 +66,29 @@ return(EOL);}
 "ZERA" {
 	return (ZERA);}
 
-[=] { return (ig); 
+
+"DEC" {
+	return (DEC);}
+
+"SE" {
+
+	return (SE);}
+
+"ENTAO" {
+
+	return (ENTAO);}
+
+"SENAO" {
+
+	return (SENAO);}
+"VEZES" {
+
+	return (VEZES);}
+
+
+[=] {
+
+ return (ig); 
 }
 
 
@@ -90,7 +112,7 @@ return(EOL);}
 
 [a-zA-z]+ {  
 	yylval.istring=strdup(yytext);
-	
+
 	return(id);}
 
 

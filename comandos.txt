@@ -1,0 +1,4 @@
+bison -d provol_one.y && flex provol_one.l && gcc -o parser lex.yy.c provol_one.tab.c -ll && rm *.tab.* lex.yy.c && ./parser
+
+
+bison -d provolone_ext.y && flex provolone_ext.l && gcc -o parser lex.yy.c provolone_ext.tab.c -ll && rm *.tab.* lex.yy.c && ./parser
