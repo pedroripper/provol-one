@@ -1,0 +1,10 @@
+ENTRADA X , Y
+SAIDA Z
+Z = Y
+tempiii
+tempiii = X
+ENQUANTO tempiii FACA
+INC ( Z )
+DEC ( tempiii )
+FIM
+FIM

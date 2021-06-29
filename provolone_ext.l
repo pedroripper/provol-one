@@ -53,12 +53,10 @@ return(EOL);}
 
 
 "FACA" {
-
 	return (FACA);}
 
 
 "FIM" {
-printf("Li: %s",yytext);
 	return (FIM);}
 
 
@@ -82,7 +80,6 @@ printf("Li: %s",yytext);
 
 	return (SENAO);}
 "VEZES" {
-
 	return (VEZES);}
 
 
@@ -112,7 +109,6 @@ printf("Li: %s",yytext);
 
 [a-zA-z]+ {  
 	yylval.istring=strdup(yytext);
-
 	return(id);}
 
 

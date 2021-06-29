@@ -66,6 +66,9 @@ return(EOL);}
 "ZERA" {
 	return (ZERA);}
 
+"DEC" {
+	return (DEC);}
+
 [=] { return (ig); 
 }
 

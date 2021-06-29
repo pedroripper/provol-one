@@ -1,0 +1,8 @@
+ENTRADA X , Y
+SAIDA Z
+temp = X
+ENQUANTO temp FACA
+INC ( Y )
+ZERA ( temp )
+FIM
+FIM

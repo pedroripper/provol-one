@@ -65,11 +65,9 @@ int val;
 %%
 
 
-
-
 program: ENTRADA varlist EOL SAIDA id EOL cmds FIM{
 
-	comp = fopen("programa_provolone_saida.txt","w");
+	comp = fopen("tests_results/programa_provolone_saida.txt","w");
 
 
 
@@ -111,8 +109,6 @@ varlist: id virgula varlist {
 
 	;
 
-	
-
 
 
 cmds:
@@ -126,7 +122,7 @@ cmds:
 	$$ = varRes;
 	}
 	| cmd EOL{
-	char *varRes = (char*)malloc((strlen($1)+2)*sizeof(char));
+	char *varRes = (char*)malloc((strlen($1)+1)*sizeof(char));
 	strcpy(varRes,$1);
 	strcat(varRes,"\0");
 	$$ = varRes;
@@ -141,7 +137,7 @@ cmd:
 	strcat(varRes, "\n"); 
 	strcat(varRes,"ENQUANTO ");
 	strcat(varRes,"temp"); 
-	strcat(varRes,"\n"); 
+	strcat(varRes," "); 
 	strcat(varRes, "FACA\n"); 
 	strcat(varRes,$5);
 	strcat(varRes,"ZERA ( temp )");
@@ -150,23 +146,23 @@ cmd:
 
 	} 
 	| SE id ENTAO EOL cmds SENAO EOL cmds FIM{
-	char *varRes = (char*)malloc((2*strlen($2)+strlen($5)+strlen($8)+145)*sizeof(char));
-	strcpy(varRes, "tempi = "); 	
+	char *varRes = (char*)malloc((2*strlen($2)+strlen($5)+strlen($8)+162)*sizeof(char));
+	strcpy(varRes, "tempi\n"); 	
+	strcat(varRes, "tempi = "); 	
 	strcat(varRes, $2);
 	strcat(varRes, "\n");           
-	strcat(varRes, "INC ( tempi )");   
-	strcat(varRes,"ENQUANTO tempi\n");   
-	strcat(varRes, "FACA"); 			
-	strcpy(varRes, "tempii = "); 		
+	strcat(varRes, "INC ( tempi )\n");   
+	strcat(varRes,"ENQUANTO tempi ");   
+	strcat(varRes, "FACA\n"); 		
+	strcat(varRes, "tempii\n"); 		
+	strcat(varRes, "tempii = "); 		
 	strcat(varRes, $2);
-	strcat(varRes,"ENQUANTO tempii\n"); 
-	strcat(varRes, "FACA\n"); 			
+	strcat(varRes,"\nENQUANTO tempii FACA\n"); 	
 	strcat(varRes, $5); 
 	strcat(varRes, "ZERA ( tempi )\n"); 
 	strcat(varRes, "ZERA ( tempii )\n"); 
 	strcat(varRes, "FIM\n");  
-	strcat(varRes,"ENQUANTO tempi\n"); 
-	strcat(varRes,"FACA\n"); 
+	strcat(varRes,"ENQUANTO tempi FACA\n"); 
 	strcat(varRes, $8); 
 	strcat(varRes, "ZERA ( tempi )\n"); 
 	strcat(varRes, "FIM\nFIM\0"); 
@@ -174,14 +170,15 @@ cmd:
 	$$ = varRes;
 
 	}|
-	FACA EOL cmds EOL id VEZES EOL FIM {
-	char *varRes = (char*)malloc((strlen($3)+strlen($5)+39)*sizeof(char));
-	printf("Trab");
-	strcpy(varRes, "tempiii = "); 
-	strcat(varRes, $5);
+	FACA id VEZES EOL cmds FIM {
+	char *varRes = (char*)malloc((strlen($2)+strlen($5)+62)*sizeof(char));
+	strcpy(varRes, "tempiii\n"); 
+	strcat(varRes, "tempiii = "); 
+	strcat(varRes, $2);
 	strcat(varRes, "\nENQUANTO "); 
 	strcat(varRes, "tempiii FACA\n"); 
-	strcat(varRes,$3); 
+	strcat(varRes,$5);
+	strcat(varRes,"DEC ( tempiii )");
 	strcat(varRes,"\nFIM\0"); 
 	$$ =varRes;
 	
@@ -199,7 +196,7 @@ cmd:
 	strcat(varRes," = ");
 	strcat(varRes,$3);
 	strcat(varRes,"\0");
-	$$ =varRes;
+	$$ = varRes;
 
 	}
 	| INC opar id fepar{
@@ -225,16 +222,13 @@ cmd:
 	} 
 	;
 
-
-
-
 %%
 
 
 
 int main() {
 
-	FILE *codigo_provolone = fopen("provolone_source_2.txt","r");
+	FILE *codigo_provolone = fopen("tests/provolone_source_ext.txt","r");
 	
 
 	yyin = codigo_provolone;

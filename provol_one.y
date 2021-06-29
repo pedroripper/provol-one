@@ -38,6 +38,7 @@ int val;
 %token <val> FACA 
 %token <val> ZERA 
 %token <val> INC 
+%token <val> DEC
 %token <val> opar 
 %token <val> fepar 
 %token <val> ig 
@@ -59,12 +60,12 @@ int val;
 
 program: ENTRADA varlist EOL SAIDA id EOL cmds FIM{
 
-	comp = fopen("programa_c.c","w");
+	comp = fopen("tests_results/programa_c.c","w");
 
 	fputs("#include <stdio.h>\n\n",comp);
 
 
-	char *varRes = (char*)malloc((strlen($2)+2*strlen($5)+strlen($7)+46)*sizeof(char));
+	char *varRes = (char*)malloc((2*strlen($2)+2*strlen($5)+strlen($7)+54)*sizeof(char));
 
 
 	strcpy(varRes,"int func("); 
@@ -82,6 +83,9 @@ program: ENTRADA varlist EOL SAIDA id EOL cmds FIM{
 	strcat(varRes,"; \n }\n\n"); 
 
 	strcat(varRes,"int main(){\n");	
+	strcat(varRes,"func(");	
+	strcat(varRes,$2);
+	strcat(varRes,");\n");
 	strcat(varRes,"\n return 0;\n}\0");
 	printf("%s", varRes);	
 	fputs(varRes, comp);
@@ -119,7 +123,6 @@ varlist: id virgula varlist {
 	
 
 
-
 cmds:
 	cmd EOL cmds {
 
@@ -142,12 +145,12 @@ cmds:
 cmd:
 	ENQUANTO id FACA EOL cmds FIM{
 
-	char *varRes = (char*)malloc((strlen($2)+strlen($5)+16)*sizeof(char));
-	strcpy(varRes, "do{\n"); 
-	strcat(varRes, $5);
-	strcat(varRes, "\n}while("); 
+	char *varRes = (char*)malloc((strlen($2)+strlen($5)+12)*sizeof(char));
+	strcpy(varRes, "while("); 
 	strcat(varRes, $2);
-	strcat(varRes,");\n\0"); 
+	strcat(varRes, "){\n"); 
+	strcat(varRes, $5);
+	strcat(varRes,"}\n\0"); 
 	$$ =varRes;
 	}
 	| id ig id{
@@ -174,6 +177,19 @@ cmd:
 	strcat(varRes, "=0;\n\0");
 	$$ = varRes;
 	} 
+	| DEC opar id fepar {
+	char *varRes = (char*)malloc((strlen($3)+5)*sizeof(char));
+	strcpy(varRes, $3);
+	strcat(varRes, "--;\n\0");
+	$$ = varRes;
+	}
+	| id {
+	char *varRes = (char*)malloc((strlen($1)+7)*sizeof(char));
+	strcpy(varRes, "int ");
+	strcat(varRes, $1);
+	strcat(varRes, ";\n\0");
+	$$ = varRes;
+	} 
 	;
 
 %%
@@ -182,8 +198,8 @@ cmd:
 
 int main() {
 
-	FILE *codigo_provolone = fopen("provolone_source.txt","r");
-	
+	FILE *codigo_provolone = fopen("tests/provolone_source_4.txt","r");
+
 
 	yyin = codigo_provolone;
 

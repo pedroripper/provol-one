@@ -1,0 +1,19 @@
+ENTRADA X , Y
+SAIDA Z
+tempi
+tempi = X
+INC ( tempi )
+ENQUANTO tempi FACA
+tempii
+tempii = X
+ENQUANTO tempii FACA
+INC ( Y )
+ZERA ( tempi )
+ZERA ( tempii )
+FIM
+ENQUANTO tempi FACA
+INC ( Z )
+ZERA ( tempi )
+FIM
+FIM
+FIM
